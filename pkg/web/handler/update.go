@@ -44,6 +44,11 @@ func (c *WebHandler) UpdateWeb(ctx *echo.Context) error {
 		return models.ErrInvalidModel{Err: err}
 	}
 
+	useMarkdown := wantsMarkdown(ctx)
+	if useMarkdown {
+		applyMarkdownIn(currentStruct)
+	}
+
 	// Validate the struct
 	if err := ctx.Validate(currentStruct); err != nil {
 		return err
@@ -57,6 +62,10 @@ func (c *WebHandler) UpdateWeb(ctx *echo.Context) error {
 
 	if err := DoUpdate(ctx.Request().Context(), currentStruct, currentAuth); err != nil {
 		return err
+	}
+
+	if useMarkdown {
+		applyMarkdownOut(currentStruct)
 	}
 
 	return ctx.JSON(http.StatusOK, currentStruct)

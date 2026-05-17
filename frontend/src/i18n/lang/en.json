@@ -995,6 +995,7 @@
         "relatedTasks": "Add Relation",
         "moveProject": "Move",
         "duplicate": "Duplicate",
+        "exportMarkdown": "Export as Markdown",
         "color": "Set Color",
         "delete": "Delete",
         "favorite": "Add to Favorites",

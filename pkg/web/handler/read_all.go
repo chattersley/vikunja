@@ -121,5 +121,9 @@ func (c *WebHandler) ReadAllWeb(ctx *echo.Context) error {
 		result = []interface{}{}
 	}
 
+	if wantsMarkdown(ctx) {
+		applyMarkdownOut(result)
+	}
+
 	return ctx.JSON(http.StatusOK, result)
 }

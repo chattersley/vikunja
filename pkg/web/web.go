@@ -38,6 +38,14 @@ type CRUDable interface {
 	Delete(*xorm.Session, Auth) error
 }
 
+// MarkdownFormattable is implemented by models whose textual fields can be
+// served and accepted as Markdown via the ?format=markdown query parameter.
+// MarkdownFields returns pointers to the string fields the handler should
+// convert. HTML remains the canonical storage format; Markdown is a view.
+type MarkdownFormattable interface {
+	MarkdownFields() []*string
+}
+
 // HTTPErrorProcessor is executed when the defined error is thrown, it will make sure the user sees an appropriate error message and http status code
 type HTTPErrorProcessor interface {
 	HTTPError() HTTPError
