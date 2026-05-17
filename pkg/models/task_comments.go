@@ -61,6 +61,7 @@ func (tc *TaskComment) TableName() string {
 // @Security JWTKeyAuth
 // @Param relation body models.TaskComment true "The task comment object"
 // @Param taskID path int true "Task ID"
+// @Param format query string false "If set to `markdown`, the request body's `comment` field is parsed as Markdown and stored as HTML, and the returned `comment` is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Success 201 {object} models.TaskComment "The created task comment object."
 // @Failure 400 {object} web.HTTPError "Invalid task comment object provided."
 // @Failure 500 {object} models.Message "Internal error"
@@ -162,6 +163,7 @@ func (tc *TaskComment) Delete(s *xorm.Session, a web.Auth) error {
 // @Security JWTKeyAuth
 // @Param taskID path int true "Task ID"
 // @Param commentID path int true "Comment ID"
+// @Param format query string false "If set to `markdown`, the request body's `comment` field is parsed as Markdown and stored as HTML, and the returned `comment` is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Success 200 {object} models.TaskComment "The updated task comment object."
 // @Failure 400 {object} web.HTTPError "Invalid task comment object provided."
 // @Failure 404 {object} web.HTTPError "The task comment was not found."
@@ -227,6 +229,7 @@ func getTaskCommentSimple(s *xorm.Session, tc *TaskComment) error {
 // @Security JWTKeyAuth
 // @Param taskID path int true "Task ID"
 // @Param commentID path int true "Comment ID"
+// @Param format query string false "If set to `markdown`, the returned `comment` is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Success 200 {object} models.TaskComment "The task comment object."
 // @Failure 400 {object} web.HTTPError "Invalid task comment object provided."
 // @Failure 404 {object} web.HTTPError "The task comment was not found."
@@ -256,6 +259,7 @@ func (tc *TaskComment) ReadOne(s *xorm.Session, _ web.Auth) (err error) {
 // @Security JWTKeyAuth
 // @Param taskID path int true "Task ID"
 // @Param order_by query string false "Sort order. Can be 'asc' for ascending or 'desc' for descending. Defaults to 'asc'."
+// @Param format query string false "If set to `markdown`, each comment's `comment` field is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Success 200 {array} models.TaskComment "The array with all task comments"
 // @Failure 500 {object} models.Message "Internal error"
 // @Router /tasks/{taskID}/comments [get]

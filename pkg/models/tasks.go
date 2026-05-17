@@ -229,6 +229,7 @@ type taskSearchOptions struct {
 // @Param filter_timezone query string false "The time zone which should be used for date match (statements like "now" resolve to different actual times)"
 // @Param filter_include_nulls query string false "If set to true the result will include filtered fields whose value is set to `null`. Available values are `true` or `false`. Defaults to `false`."
 // @Param expand query string false "If set to `subtasks`, Vikunja will fetch only tasks which do not have subtasks and then in a second step, will fetch all of these subtasks. This may result in more tasks than the pagination limit being returned, but all subtasks will be present in the response. If set to `buckets`, the buckets of each task will be present in the response. If set to `reactions`, the reactions of each task will be present in the response. If set to `comments`, the first 50 comments of each task will be present in the response. You can set this multiple times with different values."
+// @Param format query string false "If set to `markdown`, each task's `description` is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Security JWTKeyAuth
 // @Success 200 {array} models.Task "The tasks"
 // @Failure 500 {object} models.Message "Internal error"
@@ -902,6 +903,7 @@ func setNewTaskIndex(s *xorm.Session, t *Task) (err error) {
 // @Security JWTKeyAuth
 // @Param id path int true "Project ID"
 // @Param task body models.Task true "The task object"
+// @Param format query string false "If set to `markdown`, the request body's `description` field is parsed as Markdown and stored as HTML, and the returned `description` is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Success 201 {object} models.Task "The created task object."
 // @Failure 400 {object} web.HTTPError "Invalid task object provided."
 // @Failure 403 {object} web.HTTPError "The user does not have access to the project"
@@ -1099,6 +1101,7 @@ func setTaskInBucketInViews(s *xorm.Session, t *Task, a web.Auth, setBucket bool
 // @Security JWTKeyAuth
 // @Param id path int true "The Task ID"
 // @Param task body models.Task true "The task object"
+// @Param format query string false "If set to `markdown`, the request body's `description` field is parsed as Markdown and stored as HTML, and the returned `description` is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Success 200 {object} models.Task "The updated task object."
 // @Failure 400 {object} web.HTTPError "Invalid task object provided."
 // @Failure 403 {object} web.HTTPError "The user does not have access to the task (aka its project)"
@@ -1959,6 +1962,7 @@ func (t *Task) Delete(s *xorm.Session, a web.Auth) (err error) {
 // @Produce json
 // @Param id path int true "The task ID"
 // @Param expand query string false "If set to `subtasks`, Vikunja will fetch only tasks which do not have subtasks and then in a second step, will fetch all of these subtasks. This may result in more tasks than the pagination limit being returned, but all subtasks will be present in the response. If set to `buckets`, the buckets of each task will be present in the response. If set to `reactions`, the reactions of each task will be present in the response. If set to `comments`, the first 50 comments of each task will be present in the response. You can set this multiple times with different values."
+// @Param format query string false "If set to `markdown`, the returned `description` is serialised as Markdown. Defaults to HTML." Enums(markdown)
 // @Security JWTKeyAuth
 // @Success 200 {object} models.Task "The task"
 // @Failure 404 {object} models.Message "Task not found"

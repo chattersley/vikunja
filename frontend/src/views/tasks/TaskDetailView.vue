@@ -534,6 +534,13 @@
 						>
 							{{ $t('task.detail.actions.duplicate') }}
 						</XButton>
+						<XButton
+							variant="secondary"
+							icon="download"
+							@click="exportTaskAsMarkdown"
+						>
+							{{ $t('task.detail.actions.exportMarkdown') }}
+						</XButton>
 
 						<span class="action-heading">{{ $t('task.detail.dateAndTime') }}</span>
 
@@ -1133,6 +1140,21 @@ async function changeProject(project: IProject | null) {
 async function toggleFavorite() {
 	const newTask = await taskStore.toggleFavorite(task.value)
 	Object.assign(task.value, newTask)
+}
+
+async function exportTaskAsMarkdown() {
+	const taskAsMarkdown = await taskService.get({id: task.value.id} as ITask, {format: 'markdown'})
+	const title = taskAsMarkdown.title || `task-${task.value.id}`
+	const body = `# ${title}\n\n${taskAsMarkdown.description || ''}\n`
+	const blob = new Blob([body], {type: 'text/markdown;charset=utf-8'})
+	const url = URL.createObjectURL(blob)
+	const a = document.createElement('a')
+	a.href = url
+	a.download = `${title.replace(/[^a-z0-9-_]+/gi, '-').toLowerCase()}.md`
+	document.body.appendChild(a)
+	a.click()
+	a.remove()
+	URL.revokeObjectURL(url)
 }
 
 async function duplicateCurrentTask() {

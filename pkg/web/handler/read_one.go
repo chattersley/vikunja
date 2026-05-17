@@ -59,5 +59,9 @@ func (c *WebHandler) ReadOneWeb(ctx *echo.Context) error {
 	ctx.Response().Header().Set("x-max-permission", strconv.FormatInt(int64(maxPermission), 10))
 	ctx.Response().Header().Set("Access-Control-Expose-Headers", "x-max-permission")
 
+	if wantsMarkdown(ctx) {
+		applyMarkdownOut(currentStruct)
+	}
+
 	return ctx.JSON(http.StatusOK, currentStruct)
 }
